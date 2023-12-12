@@ -1,5 +1,5 @@
 const Producto = require('../db/models/producto');
-
+const {uploadImage} = require('./imageService')
 class ServiceProducto {
     constructor() {}
 
