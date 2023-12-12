@@ -22,7 +22,7 @@ app.use(cors())
 app.use('/producto', routerProducto)
 app.use('/usuario', routerUsuario)
 
-const port = 5001
+const port = 5241
 app.listen(port, () => {
     console.log('Listening on port ' + port)
 })
