@@ -9,7 +9,6 @@ const productoSchema = new Schema({
     fechaCierre: Date,
     descripcion: String,
     imagen: String,
-    puja: JSON
 })
 
 

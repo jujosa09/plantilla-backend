@@ -31,28 +31,6 @@ class ServiceProducto {
         return res;
     }
 
-    async findByPujasUsuario(pujas) {
-        let productosByPujas = [];
-        for (let i = 0; i < pujas.length; i++) {
-            await this.processProductosByPujas(pujas[i].producto, pujas[i], productosByPujas);
-        }
-        return productosByPujas;
-    }
-
-    async processProductosByPujas(productoId, puja, productosByPujas) {
-        let j = 0;
-        while (j < productosByPujas.length && productosByPujas[j].producto.id !== productoId) {
-            j++;
-        }
-
-        if (j >= productosByPujas.length) {
-            const producto = await this.findById(productoId);
-            productosByPujas.push({producto: producto, pujas: [puja]});
-        } else {
-            productosByPujas[j].pujas.push(puja);
-        }
-    }
-
     async findByPrecio(precio) {
         const res = await Producto.find(
             {
@@ -62,26 +40,61 @@ class ServiceProducto {
         return res;
     }
 
-    async filterProductos(nombre, descripcion) {
-        if (typeof nombre === 'undefined' && typeof descripcion == 'undefined') {
-            const res = await this.findAll().sort({fechaInicio: -1});
-            return res;
-        } else {
-            const res = await Producto.find(
-                {
-                    nombre: {
-                        '$regex': nombre,
-                        '$options': 'i'
+    async filterProductos(usuario, texto, order) {
+        let filtroBusqueda = {};
+
+        if (typeof texto !== 'undefined') {
+            filtroBusqueda = {
+                $or: [
+                    {
+                        nombre:
+                        {
+                            '$regex': texto,
+                            '$options': 'i'
+                        }
                     },
 
-                    descripcion: {
-                        '$regex': descripcion,
-                        '$options': 'i'
+                    {
+                        descripcion:
+                        {
+                            '$regex': texto,
+                            '$options': 'i'
+                        }
                     }
-                }
-            ).sort({fechaInicio: -1});
-            return res;
+                ]
+            }
         }
+
+        if (typeof usuario !== 'undefined') {
+            filtroBusqueda.usuario = usuario;
+        }
+
+        let res = [];
+        switch (String(order)) {
+            case "Activa":
+                filtroBusqueda.fechaCierre = {$gte: new Date()};
+                res = await Producto.find(filtroBusqueda).sort({fechaInicio: -1});
+                break;
+            case "Finalizada":
+                filtroBusqueda.fechaCierre = {$lte: new Date()};
+                res = await Producto.find(filtroBusqueda).sort({fechaInicio: -1});
+                break;
+            case "Precio_Asc":
+                res = await Producto.find(filtroBusqueda).sort({precioInicial: 1});
+                break;
+            case "Precio_Desc":
+                res = await Producto.find(filtroBusqueda).sort({precioInicial: -1});
+                break;
+            case "Fecha_Asc":
+                res = await Producto.find(filtroBusqueda).sort({fechaInicio: 1});
+                break;
+
+            default:
+                res = await Producto.find(filtroBusqueda).sort({fechaInicio: -1});
+                break;
+        }
+
+        return res;
     }
 
     async checkProducto(nombre, usuario) {
@@ -98,6 +111,7 @@ class ServiceProducto {
     }
 
     async create(nombre, direccion, usuario, precioInicial, fechaCierre, descripcion, imagen) {
+        console.log(imagen)
         const res = await Producto.create(
             {
                 nombre: nombre,
@@ -108,10 +122,12 @@ class ServiceProducto {
                 fechaCierre: fechaCierre,
                 descripcion: descripcion,
                 imagen: imagen,
-                puja: {}
             }
         );
-        return res;
+
+        const res_upload = await uploadImage(res._id, res.imagen)
+
+        return res_upload;
     }
 
     async checkProductoActualizable(id) {
@@ -136,14 +152,6 @@ class ServiceProducto {
         return res;
     }
 
-    async updatePuja(id, puja) {
-        const res = await Producto.findByIdAndUpdate(id,
-            {
-                puja: puja
-            },
-            { new: true }
-        );
-    }
 
     async delete(id) {
         const producto = await this.findById(id);
