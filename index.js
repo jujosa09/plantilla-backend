@@ -13,13 +13,7 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-    origin: function (origin, callback) {
-        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-            callback(null, true)
-        } else {
-            callback(new Error('Origen no permitido por CORS'))
-        }
-    },
+    origin: 'https://plantilla-backend.vercel.app',
     optionsSuccessStatus: 200 // Algunos navegadores antiguos pueden fallar con 204
 };
 
