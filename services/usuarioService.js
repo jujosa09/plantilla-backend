@@ -105,7 +105,7 @@ class ServiceUsuario {
     }
 
     async deleteUsuario(id) {
-        const res = await Usuario.findByIdAndDelete(id);
+        const res = await Usuario.findAndDelete({correo: id});
         return res;
     }
 
