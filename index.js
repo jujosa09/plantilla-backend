@@ -7,10 +7,20 @@ const bodyParser = require('body-parser')
 const {routerProducto} = require('./routes/routerProducto')
 const {routerUsuario} = require('./routes/usuarioRoute')
 const {routerCarbono} = require('./routes/routerCarbono')
+const allowedOrigins = [
+    'https://plantilla-backend.vercel.app',
+    'http://localhost:5173'
+];
 
 const corsOptions = {
-    origin: 'https://plantilla-backend.vercel.app',
-    optionsSuccessStatus: 200 // Algunos navegadores antiguos (IE11, varios SmartTVs) fallan con 204
+    origin: function (origin, callback) {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true)
+        } else {
+            callback(new Error('Origen no permitido por CORS'))
+        }
+    },
+    optionsSuccessStatus: 200 // Algunos navegadores antiguos pueden fallar con 204
 };
 
 app.use(cors(corsOptions));
