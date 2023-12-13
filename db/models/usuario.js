@@ -2,7 +2,7 @@ const {Schema, model} = require('mongoose')
 
 const usuarioSchema = new Schema({
     nombre: {type: String, required: true},
-    correo: {type:String, unique: true},
+    correo: {type: String, unique: true},
     imagen: String,
     localizacion: [JSON]
 })
