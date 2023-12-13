@@ -12,7 +12,7 @@ const allowedOrigins = [
     'http://localhost:5173'
 ];
 
-/*const corsOptions = {
+const corsOptions = {
     origin: function (origin, callback) {
         if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
             callback(null, true)
@@ -24,7 +24,6 @@ const allowedOrigins = [
 };
 
 app.use(cors(corsOptions));
-*/
 app.options('*', cors())
 app.use(bodyParser.json({ limit: '500mb' }));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
