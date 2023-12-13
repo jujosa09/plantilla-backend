@@ -68,7 +68,7 @@ const getUsuarioByIdController = async (req, res, next) => {
 
 const deleteUsuarioController = async (req, res, next) => {
     try{
-        const response = await serviceUsuario.deleteUsuario(req.params.correo)
+        const response = await serviceUsuario.deleteUsuario(req.params.id)
         res.status(response.status).send(response.res);
     }catch(error){
         res.status(500).send({success: false, message: error.message});

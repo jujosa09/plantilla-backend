@@ -7,7 +7,7 @@ const routerUsuario = express.Router()
 
 routerUsuario.post('/', createUsuarioController)
 routerUsuario.get('/', getUsuarioByIdController)
-routerUsuario.delete('/:id', deleteUsuarioController)
+routerUsuario.delete('/:correo', deleteUsuarioController)
 routerUsuario.put('/', updateUsuarioController)
 routerUsuario.get('/checkToken', checkToken)
 routerUsuario.get('/checkOrCreate', checkUserFromGoogle)
