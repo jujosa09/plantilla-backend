@@ -3,6 +3,7 @@ const routerProducto = express.Router()
 const productoController = require('../controllers/productoController')
 
 routerProducto.get('/', productoController.listarProductos)
+            .get('/:id', productoController.listarProductos)
             //.get('/:usuario', productoController.listarProductos)
             .post('/filter', productoController.filtrarProductos)
             .post('/', productoController.guardarProducto)
