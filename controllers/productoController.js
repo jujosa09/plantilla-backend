@@ -1,20 +1,11 @@
-const { verify } = require('../oauth-google');
 const ServiceProducto = require('../services/productoService');
 const serviceProducto = new ServiceProducto();
 
 const ServiceUsuario = require('../services/usuarioService')
 const serviceUsuario = new ServiceUsuario()
 
-
 const listarProductos = async(req, res) => {
     try {
-
-        const token = req.headers.authorization.split(' ')[1]
-        console.log(token)
-        const response = await verify(token)
-
-        console.log(response.status)
-
         if (typeof req.params.id !== 'undefined' && req.params.id !== null && req.params.id !== '') {
             const producto = await serviceProducto.findById(req.params.id);
               res.status(200).send({producto: producto});
