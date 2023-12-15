@@ -12,7 +12,7 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-    origin: 'https://plantilla-frontend.vercel.app',
+    origin: 'http://localhost:5173',
     optionsSuccessStatus: 200 // Algunos navegadores antiguos pueden fallar con 204
 };
 
