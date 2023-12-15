@@ -1,30 +1,30 @@
 const { cloudinary } = require('../storage');
-const Producto = require('../db/models/producto');
+const Producto = require('../db/models/evento');
 
-async function uploadImage(productoId, image){
+async function uploadImage(eventoId, image){
     try {
         console.log(productoId)
-        const producto = await Producto.findById(productoId);
-        if (!producto) {
-            return { statusCode: 400, message: "No existe el producto" };
+        const evento = await Evento.findById(eventoId);
+        if (!evento) {
+            return { statusCode: 400, message: "No existe el evento" };
         }
 
         const result = await new Promise((resolve, reject) => {
             cloudinary.uploader.upload_stream(
-                { folder: 'ProductoImages' },
+                { folder: 'EventoImages' },
                 (error, result) => {
                     if (error) {
                         console.error(error);
                         reject({ statusCode: 500, message: "Error al subir imagen a Cloudinary" });
                     } else {
-                        producto.imagen = result.secure_url;
-                        producto.save()
-                            .then((producto) => {
-                                resolve({ statusCode: 200, message: producto });
+                        evento.imagen = result.secure_url;
+                        evento.save()
+                            .then((evento) => {
+                                resolve({ statusCode: 200, message: evento });
                             })
                             .catch((err) => {
                                 console.error(err);
-                                reject({ statusCode: 500, message: "Error al guardar la imagen en el producto" });
+                                reject({ statusCode: 500, message: "Error al guardar la imagen en el evento" });
                             });
                     }
                 }

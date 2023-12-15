@@ -4,9 +4,8 @@ const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
 
-const {routerProducto} = require('./routes/routerProducto')
+const {routerEvento} = require('./routes/routerEvento')
 const {routerUsuario} = require('./routes/usuarioRoute')
-const {routerCarbono} = require('./routes/routerCarbono')
 const allowedOrigins = [
     'https://plantilla-backend.vercel.app',
     'http://localhost:5173'
@@ -27,11 +26,8 @@ app.get('/', (req, res, next) => {
     next()
 })
 
-
-
-app.use('/producto', routerProducto)
+app.use('/evento', routerEvento)
 app.use('/usuario', routerUsuario)
-app.use('/carbono', routerCarbono)
 
 const port = 5241
 app.listen(port, () => {
