@@ -35,7 +35,7 @@ class ServiceEvento {
             }
         );
 
-        const res_upload = await uploadImage(res._id, res.imagen)
+        const res_upload = await uploadImage(res._id, imagen)
 
         return res_upload;
     }

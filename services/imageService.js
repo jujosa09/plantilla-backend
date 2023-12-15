@@ -4,6 +4,7 @@ const Producto = require('../db/models/evento');
 async function uploadImage(eventoId, image){
     try {
         console.log(productoId)
+        console.log(image)
         const evento = await Evento.findById(eventoId);
         if (!evento) {
             return { statusCode: 400, message: "No existe el evento" };
